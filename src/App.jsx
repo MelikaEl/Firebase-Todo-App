@@ -1,4 +1,7 @@
 import "./App.css";
+import {FaPlus, FaPencilAlt, FaTrash} from 'react-icons/fa';
+
+
 
 function App() {
   return (
@@ -12,7 +15,7 @@ function App() {
             className="py-2 px-4 border rounded w-full focus:outline-none mr-2"
           />
           <button className="bg-gradient-to-r from-blue-400 to-blue-600 text-white py-2 px-4 rounded">
-            Add
+            <FaPlus/>
           </button>
         </div>
       </div>
@@ -22,15 +25,15 @@ function App() {
           <li className="flex items-center justify-between bg-white p-3 rounded shadow-md mb-3">
             <span className="text-lg">Learn React</span>
             <div>
-              <button className="mr-2 p-2 bg-gradient-to-r from-gray-400 to-gray-600 text-white rounded hover:from-gray-500 hover:to-gray-700 ">Edit</button>
-              <button className="p-2 bg-gradient-to-r from-red-400 to-red-600 text-white rounded hover:from-red-500 hover:to-red-700 ">Remove</button>
+              <button className="mr-2 p-2 bg-gradient-to-r from-gray-400 to-gray-600 text-white rounded hover:from-gray-500 hover:to-gray-700 "><FaPencilAlt/></button>
+              <button className="p-2 bg-gradient-to-r from-red-400 to-red-600 text-white rounded hover:from-red-500 hover:to-red-700 "><FaTrash/></button>
             </div>
           </li>
           <li className="flex items-center justify-between bg-white p-3 rounded shadow-md mb-3">
             <span className="text-lg">Learn React</span>
             <div>
-              <button className="mr-2 p-2 bg-gradient-to-r from-gray-400 to-gray-600 text-white rounded hover:from-gray-500 hover:to-gray-700 ">Edit</button>
-              <button className="p-2 bg-gradient-to-r from-red-400 to-red-600 text-white rounded hover:from-red-500 hover:to-red-700 ">Remove</button>
+              <button className="mr-2 p-2 bg-gradient-to-r from-gray-400 to-gray-600 text-white rounded hover:from-gray-500 hover:to-gray-700 "><FaPencilAlt/></button>
+              <button className="p-2 bg-gradient-to-r from-red-400 to-red-600 text-white rounded hover:from-red-500 hover:to-red-700 "><FaTrash/></button>
             </div>
           </li>
 
