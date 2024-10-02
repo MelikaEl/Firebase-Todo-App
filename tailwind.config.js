@@ -5,7 +5,12 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      // eslint-disable-next-line no-unused-vars
+      backgroundImage:(_)=>({
+        'custom-background':"url('./src/assets/pexels-catiamatos-1072179.jpg')"
+      })
+    },
   },
   plugins: [],
 }
