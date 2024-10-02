@@ -8,6 +8,63 @@ function App() {
 
   const [todos, setTodos]=useState([{id:1,todo:'Learn React'}]);
   const [input,setInput]=useState('');
+  /*
+  explain in detail the functionalities and usage of todos, setTodos, input, setInput in the whole code where these are used. 
+  Certainly! Let's break down the functionalities and usage of todos, setTodos, input, and setInput in this React component:
+1. todos and setTodos:
+const [todos, setTodos] = useState([{id:1, todo:'Learn React'}]);
+
+(todos) is an array of todo objects. Each todo object has an id and a todo property.
+setTodos is the function to update the todos state.
+Initially, there's one todo item in the array.
+Usage in the code:
+a. In the addTodo function:
+setTodos([...todos, {id: new Date(), todo: input}]);
+
+This adds a new todo item to the array, using the current input value.
+b. In the JSX, to render the list of todos:
+.todos.length > 0 && (
+  // ... 
+  {todos.map((todo, index) => (
+    <li key={index}>
+      <span className="text-lg">{todo.todo}</span>
+      // ...
+    </li>
+  ))}
+  // ...
+)
+
+This checks if there are any todos and then maps over the todos array to render each todo item.
+
+input and setInput:
+const [input, setInput] = useState('');
+
+input is a string that holds the current value of the todo input field.
+setInput is the function to update the input state.
+Initially, the input is an empty string.
+Usage in the code:
+a. In the input field:
+<input
+  type="text"
+  placeholder="Add a todo"
+  value={input}
+  onChange={(e) => setInput(e.target.value)}
+/>
+
+The value prop is set to input, creating a controlled component. The onChange event updates input with the current value of the input field.
+b. In the addTodo function:
+if(input.trim() !== '') {
+  setTodos([...todos, {id: new Date(), todo: input}]);
+  setInput('');
+}
+
+This checks if input is not empty (after trimming whitespace). If it's not empty, it adds a new todo using the input value, then clears the input field by setting it back to an empty string.
+In summary:
+(todos) and setTodos manage the list of todo items.
+input and setInput manage the current value of the todo input field.
+These states work together to allow users to add new todos and display the current list of todos.
+The component re-renders whenever these states change, ensuring the UI always reflects the current state.
+  */
 
   const addTodo=async()=>{
     try{
