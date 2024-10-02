@@ -8,6 +8,12 @@ function App() {
 
   const [todos, setTodos]=useState([{id:1,todo:'Learn React'}]);
   const [input,setInput]=useState('');
+  const [editIndex, setEditIndex]=useState(-1);
+
+  const setEdit = (index)=>{
+    setInput(todos[index].todo);
+    setEditIndex(index);
+  }
   /*
   explain in detail the functionalities and usage of todos, setTodos, input, setInput in the whole code where these are used. 
   Certainly! Let's break down the functionalities and usage of todos, setTodos, input, and setInput in this React component:
@@ -77,6 +83,20 @@ The component re-renders whenever these states change, ensuring the UI always re
     }
   }
 
+
+  const updateTodo = async () => {
+    try{
+      if (input.trim() !== ''){
+        const updatedTodos = [...todos];
+        updatedTodos[editIndex].todo = input ;
+        setTodos(updatedTodos);
+        setInput('')
+      }
+    }catch(error){
+      console.error(error.message);
+    }
+  }
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center gap-4 p-4 bg-custom-background bg-center bg-cover">
       <div className="bg-gray-100 p-6 rounded shadow-md w-full max-w-lg lg:w-1/4">
@@ -89,8 +109,8 @@ The component re-renders whenever these states change, ensuring the UI always re
             value={input}
             onChange={(e)=>setInput(e.target.value)}
           />
-          <button onClick={addTodo} className="bg-gradient-to-r from-blue-400 to-blue-600 text-white py-2 px-4 rounded">
-            <FaPlus/>
+          <button onClick={editIndex === -1 ? addTodo : updateTodo} className="bg-gradient-to-r from-blue-400 to-blue-600 text-white py-2 px-4 rounded">
+            {editIndex === -1 ? <FaPlus/> : <FaPencilAlt/>}
           </button>
         </div>
       </div>
