@@ -72,6 +72,73 @@ These states work together to allow users to add new todos and display the curre
 The component re-renders whenever these states change, ensuring the UI always reflects the current state.
   */
 
+
+
+
+
+/*
+explain in detail the functionalities and usage of editIndex, setEditIndex, setEdit, updateTodo in the whole code where these are used. 
+Certainly! Let's break down the functionalities and usage of editIndex, setEditIndex, setEdit, and updateTodo in this React component:
+editIndex and setEditIndex:
+const [editIndex, setEditIndex] = useState(-1);
+
+editIndex is a state variable that keeps track of which todo item is currently being edited.
+setEditIndex is the function to update the editIndex state.
+Initially, it's set to -1, indicating no todo is being edited.
+Usage in the code:
+a. In the JSX, to determine which action to perform when the button is clicked:
+<button onClick={editIndex === -1 ? addTodo : updateTodo} className="...">
+  {editIndex === -1 ? <FaPlus/> : <FaPencilAlt/>}
+</button>
+
+This checks if editIndex is -1. If it is, it calls addTodo; otherwise, it calls updateTodo. It also changes the button icon based on this condition.
+2. setEdit function:
+const setEdit = (index) => {
+  setInput(todos[index].todo);
+  setEditIndex(index);
+}
+
+This function is called when the edit button for a todo item is clicked. It does two things:
+Sets the input state to the text of the todo being edited.
+Sets the editIndex to the index of the todo being edited.
+Usage in the code:
+<button onClick={() => setEdit(index)} className="..."><FaPencilAlt/></button>
+
+This button, when clicked, calls setEdit with the index of the todo item.
+updateTodo function:
+const updateTodo = async () => {
+  try {
+    if (input.trim() !== '') {
+      const updatedTodos = [...todos];
+      updatedTodos[editIndex].todo = input;
+      setTodos(updatedTodos);
+      setInput('');
+    }
+  } catch (error) {
+    console.error(error.message);
+  }
+}
+
+This function is called when the user wants to update an existing todo. It:
+Checks if the input is not empty.
+Creates a copy of the todos array.
+Updates the todo at the editIndex with the new input value.
+Sets the updated todos array as the new state.
+Clears the input field.
+Usage in the code:
+It's used in the same button as addTodo, but only when editIndex is not -1:
+
+<button onClick={editIndex === -1 ? addTodo : updateTodo} className="...">
+  {editIndex === -1 ? <FaPlus/> : <FaPencilAlt/>}
+</button>
+
+In summary:
+editIndex and setEditIndex manage which todo item is currently being edited.
+setEdit prepares the component for editing a specific todo by setting the input and editIndex.
+updateTodo performs the actual update of a todo item in the todos array.
+These functions work together to enable the edit functionality in the todo app, allowing users to modify existing todos.
+*/
+
   const addTodo=async()=>{
     try{
       if(input.trim() !== ''){
@@ -90,11 +157,17 @@ The component re-renders whenever these states change, ensuring the UI always re
         const updatedTodos = [...todos];
         updatedTodos[editIndex].todo = input ;
         setTodos(updatedTodos);
+        setEditIndex(-1);
         setInput('')
       }
     }catch(error){
       console.error(error.message);
     }
+  }
+
+  const removeTodo = async(id)=>{
+    let filteredTodos = todos.filter((todo)=> todo.id !== id);
+    setTodos(filteredTodos);
   }
 
   return (
@@ -124,7 +197,7 @@ The component re-renders whenever these states change, ensuring the UI always re
               <span className="text-lg">{todo.todo}</span>
               <div>
                 <button onClick={()=>setEdit(index)} className="mr-2 p-2 bg-gradient-to-r from-gray-400 to-gray-600 text-white rounded hover:from-gray-500 hover:to-gray-700 "><FaPencilAlt/></button>
-                <button className="p-2 bg-gradient-to-r from-red-400 to-red-600 text-white rounded hover:from-red-500 hover:to-red-700 "><FaTrash/></button>
+                <button onClick={()=> removeTodo(todo.id)} className="p-2 bg-gradient-to-r from-red-400 to-red-600 text-white rounded hover:from-red-500 hover:to-red-700 "><FaTrash/></button>
               </div>
             </li>
             ))}
