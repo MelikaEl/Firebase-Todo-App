@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import { FaPlus, FaPencilAlt, FaTrash } from "react-icons/fa";
 import {db} from './assets/firebase'
-import { collection, onSnapshot } from "firebase/firestore";
+import { addDoc, collection, onSnapshot } from "firebase/firestore";
 
 function App() {
   const [todos, setTodos] = useState([]);
@@ -176,7 +176,8 @@ These functions work together to enable the edit functionality in the todo app, 
   const addTodo = async () => {
     try {
       if (input.trim() !== "") {
-        setTodos([...todos, { id: new Date(), todo: input }]);
+        // setTodos([...todos, { id: new Date(), todo: input }]);
+        await addDoc(collection(db,'todos'),{todo:input});
         setInput("");
       }
     } catch (error) {
