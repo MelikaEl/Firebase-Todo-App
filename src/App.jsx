@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import { FaPlus, FaPencilAlt, FaTrash } from "react-icons/fa";
 import {db} from './assets/firebase'
-import { addDoc, collection, doc, onSnapshot, updateDoc } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, doc, onSnapshot, updateDoc } from "firebase/firestore";
 
 function App() {
   const [todos, setTodos] = useState([]);
@@ -226,8 +226,13 @@ If an error occurs during this process, it will be caught in the catch block and
 
 
   const removeTodo = async (id) => {
-    let filteredTodos = todos.filter((todo) => todo.id !== id);
-    setTodos(filteredTodos);
+    // let filteredTodos = todos.filter((todo) => todo.id !== id);
+    // setTodos(filteredTodos);
+    try{
+      await deleteDoc(doc(db,'todos',id));
+    }catch (error){
+      console.error(error.message)
+    }
   };
 
   /*
