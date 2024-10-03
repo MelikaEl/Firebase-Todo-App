@@ -1,11 +1,52 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import { FaPlus, FaPencilAlt, FaTrash } from "react-icons/fa";
+import {db} from './assets/firebase'
+import { collection, onSnapshot } from "firebase/firestore";
 
 function App() {
-  const [todos, setTodos] = useState([{ id: 1, todo: "Learn React" }]);
+  const [todos, setTodos] = useState([]);
   const [input, setInput] = useState("");
   const [editIndex, setEditIndex] = useState(-1);
+
+  useEffect(() => {
+    const unsubscribe = onSnapshot(collection(db,'todos'),(snapshot)=>{
+      setTodos(snapshot.docs.map((doc)=>({id:doc.id,todo:doc.data().todo})));
+    });
+    return ()=>unsubscribe();
+  }, [])
+
+  /*
+  Let's break down this useEffect hook and explain its functionality in detail:
+  useEffect Hook:
+This hook runs side effects in functional components.
+It's called with two arguments: a function and a dependency array.
+The empty dependency array [] means this effect runs once when the component mounts.
+onSnapshot function:
+This is a Firebase Firestore function that listens for real-time updates to a collection.
+collection(db,'todos') refers to the 'todos' collection in the Firestore database.
+Snapshot listener:
+When the snapshot updates, it calls the provided callback function with the new snapshot.
+snapshot.docs is an array of all documents in the 'todos' collection.
+Mapping documents to todos:
+snapshot.docs.map((doc)=>({id:doc.id,todo:doc.data().todo})) transforms each document into a todo object.
+For each document, it creates an object with:
+id: The document's ID in Firestore.
+todo: The 'todo' field from the document's data.
+Updating state:
+setTodos(...) updates the component's state with the new array of todos.
+This causes the component to re-render with the latest data from Firestore.
+Unsubscribe function:
+onSnapshot returns an unsubscribe function.
+This function is stored in the unsubscribe variable.
+Cleanup function:
+The return ()=>unsubscribe(); part is a cleanup function.
+It's called when the component unmounts or before the effect runs again.
+It unsubscribes from the Firestore listener, preventing memory leaks.
+In summary, this useEffect hook sets up a real-time listener to the 'todos' collection in Firestore. Whenever the collection changes, it updates the component's state with the latest data. It also ensures proper cleanup when the
+component unmounts. This allows the todo list to stay synchronized with the Firestore database in real-time.
+  */
+
 
   const setEdit = (index) => {
     setInput(todos[index].todo);
