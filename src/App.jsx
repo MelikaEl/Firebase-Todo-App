@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import { FaPlus, FaPencilAlt, FaTrash } from "react-icons/fa";
 import {db} from './assets/firebase'
-import { addDoc, collection, onSnapshot } from "firebase/firestore";
+import { addDoc, collection, doc, onSnapshot, updateDoc } from "firebase/firestore";
 
 function App() {
   const [todos, setTodos] = useState([]);
@@ -188,9 +188,11 @@ These functions work together to enable the edit functionality in the todo app, 
   const updateTodo = async () => {
     try {
       if (input.trim() !== "") {
-        const updatedTodos = [...todos];
-        updatedTodos[editIndex].todo = input;
-        setTodos(updatedTodos);
+        // const updatedTodos = [...todos];
+        // updatedTodos[editIndex].todo = input;
+        // setTodos(updatedTodos);
+        const todoDocRef=doc(db,'todos',todos[editIndex].id);
+        await updateDoc(todoDocRef,{todo:input})
         setEditIndex(-1);
         setInput("");
       }
@@ -198,6 +200,30 @@ These functions work together to enable the edit functionality in the todo app, 
       console.error(error.message);
     }
   };
+
+/*
+ Let's break down the updateTodo function and explain its functionality in detail:
+ The function is defined as async, allowing the use of await for asynchronous operations.
+It starts with a try-catch block to handle any potential errors during the update process.
+if (input.trim() !== ""): This checks if the input is not empty after trimming whitespace. This prevents updating a todo with an empty string.
+const todoDocRef = doc(db, 'todos', todos[editIndex].id):
+This creates a reference to the specific document in the Firestore database.
+db is the Firestore database instance.
+'todos' is the collection name.
+todos[editIndex].id is the ID of the todo item being edited.
+await updateDoc(todoDocRef, {todo: input}):
+This updates the document in Firestore.
+updateDoc is a Firestore function for updating documents.
+It takes two arguments: the document reference and an object with the fields to update.
+Here, it's updating the todo field with the new input value.
+The await keyword ensures that the function waits for this operation to complete before moving on.
+setEditIndex(-1):
+This resets the editIndex state to -1, indicating that no todo is currently being edited.
+setInput(""):
+This clears the input field after the update is complete.
+If an error occurs during this process, it will be caught in the catch block and logged to the console.
+*/
+
 
   const removeTodo = async (id) => {
     let filteredTodos = todos.filter((todo) => todo.id !== id);
