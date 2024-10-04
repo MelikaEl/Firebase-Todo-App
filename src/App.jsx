@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import { FaPlus, FaPencilAlt, FaTrash } from "react-icons/fa";
+import { FaPlus, FaPencilAlt } from "react-icons/fa";
 import {db} from './assets/firebase'
 import { addDoc, collection, deleteDoc, doc, onSnapshot, updateDoc } from "firebase/firestore";
+import TodoList from "./components/TodoList";
 
 function App() {
   const [todos, setTodos] = useState([]);
@@ -272,7 +273,9 @@ In summary, removeTodo provides the delete functionality for the todo app, allow
         </div>
       </div>
 
-      {todos.length > 0 && (
+
+      {todos.length>0 && <TodoList todos={todos} setEdit={setEdit} removeTodo={removeTodo}/>}
+      {/* {todos.length > 0 && (
         <div className="bg-gray-100 p-6 rounded shadow-md w-full max-w-lg lg:w-1/4">
           <ul>
             {todos.map((todo, index) => (
@@ -299,7 +302,7 @@ In summary, removeTodo provides the delete functionality for the todo app, allow
             ))}
           </ul>
         </div>
-      )}
+      )} */}
     </div>
   );
 }
